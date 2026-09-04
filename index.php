@@ -54,6 +54,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $status
     );
 
+
     if($success){
         echo "<p>Activity: " . htmlspecialchars($action) .
         " Status: " . htmlspecialchars($status) .
@@ -63,5 +64,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     }
 
     }
+    
 ?>
 
