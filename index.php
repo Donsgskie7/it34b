@@ -16,6 +16,7 @@
     'Search',
     'Generate Report'
 
+    
  ];
  ?>
 
