@@ -31,7 +31,15 @@ if(isset($_SESSION['user_id'])){
             echo 'Location: ' . BASE_URL . '/app/' . $_SESSION['user_role'] . '/index.php';
             header('Location: ' . BASE_URL . '/app/' . $_SESSION['user_role'] . '/index.php');
             exit;
-        }
+
+        }elseif($result=== 'active_session'){
+            echo 'This account is already logged in on another device';
+
+            $error ='This account is already logged in on another device';
+
+         }else{
+            $error = 'Invalid login credentials';
+         }
     }
 }
 
