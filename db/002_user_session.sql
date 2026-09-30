@@ -14,6 +14,6 @@ CREATE TABLE user_sessions(
     CONSTRAINT fk_user_session_user_id
         FOREIGN KEY (user_id)
         REFERENCES users(user_id)
-        ON DELETE CASCODE
-        ON UPDATE CASCODE
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
