@@ -1,49 +1,62 @@
 <?php
 require_once 'config/config.php';
-require_once 'config/function.php';
 
 if(isset($_SESSION['user_id'])){
-    header('Location: ' . BASE_URL . '/app/' . $_SESSION['user_role'] . '/index.php');
+    header('Location: ' .BASE_URL . '/app/' . $_SESSION['user_role'] . '/index.php');
     exit;
 }
 
 $error='';
 
-if($_SERVER['REQUEST_METHOD'] === 'POST'){
+if($_SERVER['REQUEST_METHOD'] ==='POST'){
+    
     $login = trim($_POST['login'] ?? '');
     $password = $_POST['password'] ?? '';
 
     
-if(isset($_SESSION['user_id'])){
-    echo 'Location: ' . BASE_URL . '/app/' . $_SESSION['user_role'] . '/index.php';
-    header('Location: ' . BASE_URL . '/app/' . $_SESSION['user_role'] . '/index.php');
-    exit;
-}
     $error = 'Invalid login credentials';
 
     if ($login==='' || $password ===''){
-
-        //log incomplete login attempt
+        // Log incomplete login attempt
         logActivity($pdo,null,$login,'login','failed');
+
+    }else{
+
+        $result = loginUser($pdo,$login,$password);
+
+        if($result===true){
         
-    } else {
-        if(loginUser($pdo,$login,$password)){
-            echo 'Location: ' . BASE_URL . '/app/' . $_SESSION['user_role'] . '/index.php';
+        // Log incomplete login attempt
+            logActivity($pdo,$_SESSION['user_id'],
+            $_SESSION['user_email'],
+            'login',
+            'success'
+        );
+            
+            echo 'Location: ' . BASE_URL . '/app/' . $_SESSION['user_role'] . '/index.php'; 
             header('Location: ' . BASE_URL . '/app/' . $_SESSION['user_role'] . '/index.php');
             exit;
+
+        }elseif($result==='active_session'){
+            echo 'This account is already logged in on another device';
+            
+            $error = 'This account is already looged in on another device';
+        
+        }else{
+            
+            $error = 'Invalid login credentials';
         }
     }
 }
 
-
 ?>
 
 <!DOCTYPE html>
-<html lang-"en"
+<html lang="en">
 <head>
-    <meta charset-"UTF-8">
-    <meta name-"viewport" content-"width"=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
 <body>
 
@@ -52,15 +65,20 @@ if(isset($_SESSION['user_id'])){
     <input type="text"
             name="login"
             required>
+
     <br>
     <br>
     <label>Password</label>
     <input type="password"
             name="password"
             required>
-        <br>
-        <button type="submit">Sign In</button>
-        
-
+    <br>
+    <button type="submit">Sign In</button>
 </form>
+    
+<?php if(isset($_GET['timeout'])): ?>
+    <p>Your session has expired due to inactivity. Please log in again</p>
+<?php endif;?>
+
 </body>
+</html>
