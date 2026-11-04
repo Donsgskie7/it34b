@@ -1,49 +1,19 @@
-<?php
+CREATE TABLE user_sessions(
+    -- session id to be used in dashboards and references
+    session_id INT AUTO_INCREMENT PRIMARY KEY,
 
-function logActivity($pdo, $user_id, $user_email, $action, $status = 'success')
-{
-    try {
-        // Get Client IP Address
-        $ip = $_SERVER['HTTP_X_FORWARDED_FOR']
-            ?? $_SERVER['REMOTE_ADDR']
-            ?? 'Unknown';
+    -- User ID reference
+    user_id INT NOT NULL,
 
-        // Get the first IP if there are multiple IPs
-        if (strpos($ip, ',') !== false) {
-            $ip = trim(explode(',', $ip)[0]);
-        }
+    --Session Attributes 
+    session_start DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    session_end DATETIME DEFAULT NULL,
+    session_duration INT DEFAULT NULL,
 
-        // Get User Agent (Browser)
-        $user_agent = substr(
-            $_SERVER['HTTP_USER_AGENT'] ?? 'Unknown',
-            0,
-            255
-        );
-
-        // Insert Activity Log
-        $stmt = $pdo->prepare("
-            INSERT INTO activity_logs (
-                user_id,
-                user_email,
-                activity_log_action,
-                activity_log_status,
-                activity_log_ip_address,
-                activity_log_user_agent
-            ) VALUES (?, ?, ?, ?, ?, ?)
-        ");
-
-        return $stmt->execute([
-            $user_id,
-            $user_email,
-            $action,
-            $status,
-            $ip,
-            $user_agent
-        ]);
-
-    } catch (PDOException $e) {
-        error_log("Activity Log Error: " . $e->getMessage());
-        return false;
-    }
-}
-?>
+    -- Constraints and Foreign Key Implementation
+    CONSTRAINT fk_user_sessions_user_id
+        FOREIGN KEY (user_id)
+        REFERENCES users(user_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);

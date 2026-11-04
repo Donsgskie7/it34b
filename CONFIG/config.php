@@ -6,11 +6,12 @@ require_once (__DIR__ . '/../functions/auth.php');
 require_once (__DIR__ . '/../functions/auth.php');
 require_once (__DIR__ . '/../functions/session.php');
 require_once (__DIR__ . '/../functions/csrf.php');
+require_once (__DIR__ . '/../functions/csv.php');
 
 define('BASE_URL' , 'http://localhost/it34b');
 
 define('DB_HOST' , 'localhost');
-define('DB_NAME' , 'it34b_lab_cuizon');
+define('DB_NAME' , 'it34-b');
 define('DB_USER' , 'root');
 define('DB_PASS' , '');
 
