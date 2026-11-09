@@ -19,6 +19,9 @@ function exportCsv(string $filename, array $headers,array $rows):void
 
     fputcsv($out, $headers);
 
+
+
+    
     foreach($rows as $row){
         fputcsv($out, array_values($row));
     }
@@ -27,5 +30,6 @@ function exportCsv(string $filename, array $headers,array $rows):void
 
     exit;
 }
+
 
 ?>
