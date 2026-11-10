@@ -1,13 +1,18 @@
 <?php
 session_start();
 
-require_once(__DIR__ . '/../includes/activity-logger.php');
+require_once(__DIR__ . '/../functions/activity.php');
+require_once(__DIR__ . '/../functions/auth.php');
+require_once(__DIR__ . '/../functions/redirect.php');
+require_once(__DIR__ . '/../functions/sessions.php');
+require_once(__DIR__ . '/../functions/csrf.php');
+
 
 // define('','');
-define('BASE_URL','http://localhost/IT34B');
+define('BASE_URL','http://localhost/IT3B');
 
 define('DB_HOST','localhost');
-define('DB_NAME','it34_lab_db');
+define('DB_NAME','it3b_lab_db');
 define('DB_USER','root');
 define('DB_PASS','');
 
